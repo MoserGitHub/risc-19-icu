@@ -186,8 +186,13 @@ SAPS <- function(age=30, HR=90, ssap=120, temp=37, pao2=12, fio2=0.21, mv=F,
              return(data.frame(SAPS=NA, APACHEphysio=NA, APACHE=NA))
     }
     pao2<-pao2/0.133322368421     #conversion of pao2 from kPa to mmHg
+    ## AM: paco2 requires conversion from kPa to mmHg, too
+    paco2<-paco2/0.133322368421     #conversion of pao2 from kPa to mmHg
+    
     oxyindex<-pao2/fio2      #calculation of oxygenation index in mmHg
-    aAo2 <- ((fio2 / 100 * (760 - 47)) - (paco2 * 7.5 / 0.8)) - (pao2 + 7.5)
+    
+    # AM: Formula requires kPa (constant of 0.8)
+    aAo2 <- ((fio2 / 100 * (760/7.5 - 47/.5)) - (paco2 / 0.8)) - pao2
     ## -------------------
     ## SAPS
     saps <- 0
